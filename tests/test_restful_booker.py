@@ -5,14 +5,20 @@ import faker
 import requests
 import json
 import random
-import pytest
+
+
+'''This is meant to be run with Python pytest version 6.2.4
+Commandline usage:
+pip install -r requirements.txt
+pytest test_restful_booker.py
+
+Should collect 6 tests and run in a little under 3s.
+'''
 
 
 URL = "https://restful-booker.herokuapp.com"
 
 
-@pytest.mark.is_up
-@pytest.mark.quick
 def test_service_up():
     url = urljoin(URL, "ping")
     response = requests.request("GET", url)
@@ -20,7 +26,6 @@ def test_service_up():
     assert response.text == "Created"
 
 
-@pytest.mark.quick
 def test_bookings_return():
     url = urljoin(URL, "booking")
     response = requests.request("GET", url)
@@ -29,7 +34,6 @@ def test_bookings_return():
     assert json.loads(response.text)[0]['bookingid']
 
 
-@pytest.mark.quick
 def test_creating_booking():
     url = urljoin(URL, "booking")
     check_in, check_out, deposit, first_name, headers, last_name, needs, payload, price = create_booking_json()
@@ -45,7 +49,6 @@ def test_creating_booking():
     assert json_response['booking']['additionalneeds'] == needs
 
 
-@pytest.mark.quick
 def test_search_by_name():
     booking_id_list = []
     create_booking_url = urljoin(URL, "booking")
@@ -62,7 +65,6 @@ def test_search_by_name():
     assert json_create_call['bookingid'] in booking_id_list
 
 
-@pytest.mark.quick
 def test_update_booking():
     create_booking_url = urljoin(URL, "booking")
     check_in, check_out, deposit, first_name, headers, last_name, needs, payload, price = create_booking_json()
@@ -84,7 +86,6 @@ def test_update_booking():
     assert json_response['additionalneeds'] == nds
 
 
-@pytest.mark.quick
 def test_delete_booking():
     create_booking_url = urljoin(URL, "booking")
     check_in, check_out, deposit, first_name, headers, last_name, needs, payload, price = create_booking_json()
