@@ -1,6 +1,5 @@
 import datetime
 from dataclasses import dataclass
-from datetime import timedelta
 from urllib.parse import urljoin
 
 import faker
